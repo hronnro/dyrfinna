@@ -1,18 +1,20 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function TabTwoScreen() {
+export default function MyProfileScreen({ user }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
+      <Text style={styles.title}>My Profile</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabTwoScreen.tsx" />
-    </View>
+    </View >
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

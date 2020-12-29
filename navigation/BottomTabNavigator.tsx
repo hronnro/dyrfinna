@@ -1,17 +1,18 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
+import { CommonActions } from '@react-navigation/native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import MyProfileScreen from '../screens/MyProfileScreen';
+import { BottomTabParamList, TabOneParamList, MyProfileParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
-export default function BottomTabNavigator() {
+export default function BottomTabNavigator({ navigation, user }) {
   const colorScheme = useColorScheme();
 
   return (
@@ -26,8 +27,8 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoNavigator}
+        name="My Profile"
+        children={() => <MyProfileNavigator user={user} />}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
@@ -58,16 +59,16 @@ function TabOneNavigator() {
   );
 }
 
-const TabTwoStack = createStackNavigator<TabTwoParamList>();
+const MyProfileStack = createStackNavigator<MyProfileParamList>();
 
-function TabTwoNavigator() {
+function MyProfileNavigator({ user }) {
   return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
-        name="TabTwoScreen"
-        component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
+    <MyProfileStack.Navigator>
+      <MyProfileStack.Screen
+        name="MyProfileScreen"
+        children={() => <MyProfileScreen user={user} />}
+        options={{ headerTitle: 'My Profile', foo: "foo" }}
       />
-    </TabTwoStack.Navigator>
+    </MyProfileStack.Navigator>
   );
 }

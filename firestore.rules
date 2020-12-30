@@ -1,0 +1,73 @@
+rules_version = '2';
+
+// read: get, list
+// write: create, update, delete
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthenticated() {
+      return request.auth.uid != null && exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    function isSearchAdmin(searchId) {
+      return get(/databases/$(database)/documents/search/$(searchId)/members/$(request.auth.uid)).data.role == "admin";
+    }
+
+    function isSearchMember(searchId) {
+      return exists(/databases/$(database)/documents/search/$(searchId)/members/$(request.auth.uid))
+    }
+
+    match /users/{userId} {
+      allow get: if isAuthenticated();
+      allow create: if request.auth.uid == request.resource.data.id;
+      allow update, delete: if request.auth.uid == resource.data.id;
+    }
+
+    match /pet/{petId} {
+      allow get: if isAuthenticated();
+      allow create: if request.auth.uid == request.resource.data.ownerId;
+      allow update, delete: if request.auth.uid == resource.data.ownerId;
+    }
+
+    match /search {
+      allow list: if isAuthenticated() && resource.data.status == "active";
+    }
+
+    match /search/{searchId} {
+      allow get: if isAuthenticated();
+      allow create: if getAfter(/databases/$(database)/documents/search/$(searchId)/members/$(request.auth.uid)).data.role == "admin";
+      allow update, delete: if isSearchAdmin(searchId);
+    }
+
+    match /search/{searchId}/members {
+      allow list: if isAuthenticated();
+    }
+
+    match /search/{searchId}/members/{memberId} {
+      allow get: if isAuthenticated();
+      allow create: if isAuthenticated() && request.resource.data.role == "member";
+      allow update, delete: if request.auth.uid == memberId && request.resource.data.role == resource.data.role || isSearchAdmin(searchId);
+    }
+
+    match /search/{searchId}/spotted {
+      allow list: if isSearchMember(searchId);
+    }
+
+    match /search/{searchId}/spotted/{spotId} {
+      allow get: if isSearchMember(searchId);
+      allow create: if isSearchMember(searchId) && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth.uid == resource.data.userId || isSearchAdmin(searchId)
+    }
+
+    match /search/{searchId}/feed {
+      allow list: if isSearchMember(searchId);
+    }
+
+    match /search/{searchId}/feed/{postId} {
+      allow get: if isSearchMember(searchId);
+      allow create: if isSearchAdmin(searchId) && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSearchAdmin(searchId);
+    }
+  }
+}

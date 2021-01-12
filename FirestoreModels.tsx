@@ -10,7 +10,6 @@ export type User = {
   profilePhoto?: string,
 };
 
-
 type petId = string;
 
 // /pet/{petId}
@@ -61,7 +60,7 @@ enum SearchRole {
 // /search/{searchId}/members/{userId}
 export type SearchMember = {
   id: userId,
-  role: SearchRole, 
+  role: SearchRole,
 }
 
 

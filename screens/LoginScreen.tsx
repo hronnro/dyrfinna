@@ -10,16 +10,19 @@ import {
     Platform,
 } from 'react-native';
 
+import * as firebase from 'firebase';
+import { firebaseConfig } from '../firebase';
 import Firebase from '../Firebase';
 import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
-import * as firebase from 'firebase';
+
 
 export default function LoginScreen() {
     const recaptchaVerifier = React.useRef(null);
     const [phoneNumber, setPhoneNumber] = React.useState();
     const [verificationId, setVerificationId] = React.useState();
     const [verificationCode, setVerificationCode] = React.useState();
-    const firebaseConfig = firebase.apps.length ? firebase.app().options : undefined;
+    // firebase.apps && firebase.apps.length ? firebase.app().options : undefined;
+    console.log("firebase.auth", firebase.auth);
     const [message, showMessage] = React.useState(
         !firebaseConfig || Platform.OS === 'web'
             ? {
@@ -55,6 +58,7 @@ export default function LoginScreen() {
                     // passed directly to `verifyPhoneNumber`.
                     try {
                         const phoneProvider = new firebase.auth.PhoneAuthProvider();
+                        console.log("phoneProvider", phoneProvider);
                         const verificationId = await phoneProvider.verifyPhoneNumber(
                             phoneNumber,
                             recaptchaVerifier.current

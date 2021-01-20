@@ -1,5 +1,6 @@
 export type LoggedOutParamList = {
   Onboarding: undefined;
+  WelcomeApp: undefined;
   UserInfo: undefined;
   Authentication: undefined;
 };

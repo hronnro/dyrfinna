@@ -57,7 +57,6 @@ export default function AuthenticationScreen() {
                     // passed directly to `verifyPhoneNumber`.
                     try {
                         const phoneProvider = new firebase.auth.PhoneAuthProvider();
-                        console.log("phoneProvider", phoneProvider);
                         const verificationId = await phoneProvider.verifyPhoneNumber(
                             phoneNumber,
                             recaptchaVerifier.current

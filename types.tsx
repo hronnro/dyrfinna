@@ -1,3 +1,9 @@
+export type LoggedOutParamList = {
+  Onboarding: undefined;
+  UserInfo: undefined;
+  Authentication: undefined;
+};
+
 export type RootStackParamList = {
   Root: undefined;
   NotFound: undefined;

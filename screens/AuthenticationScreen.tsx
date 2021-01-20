@@ -16,13 +16,12 @@ import Firebase from '../Firebase';
 import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
 
 
-export default function LoginScreen() {
+export default function AuthenticationScreen() {
     const recaptchaVerifier = React.useRef(null);
     const [phoneNumber, setPhoneNumber] = React.useState();
     const [verificationId, setVerificationId] = React.useState();
     const [verificationCode, setVerificationCode] = React.useState();
-    // firebase.apps && firebase.apps.length ? firebase.app().options : undefined;
-    console.log("firebase.auth", firebase.auth);
+
     const [message, showMessage] = React.useState(
         !firebaseConfig || Platform.OS === 'web'
             ? {

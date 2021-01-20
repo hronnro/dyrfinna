@@ -6,15 +6,18 @@ import { Text, View } from '../components/Themed';
 export default function WelcomeScreen({ onPress }) {
     return (
         <View style={styles.container}>
+            <Text style={styles.headerText} >
+                {"Welcome Screen"}
+            </Text>
             <TouchableOpacity onPress={() => onPress(true)} >
                 <Text>
-                    {"User already has account"}
+                    {"Login"}
                 </Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => onPress(false)} >
                 <Text>
-                    {"Create new account"}
+                    {"Signup"}
                 </Text>
             </TouchableOpacity>
         </View>
@@ -28,5 +31,9 @@ const styles = StyleSheet.create({
         backgroundColor: "pink",
         alignItems: "center",
         justifyContent: "center"
+    },
+    headerText: {
+        fontSize: 20,
+        paddingVertical: 20
     },
 });

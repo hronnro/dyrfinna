@@ -14,9 +14,12 @@ import * as firebase from 'firebase';
 import { firebaseConfig } from '../firebase';
 import Firebase from '../Firebase';
 import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
+import { createUser } from '../api/UserStore';
+import { User } from '../FirestoreModels';
 
 
-export default function AuthenticationScreen() {
+export default function AuthenticationScreen({ route }) {
+    const { userInfo } = route.params;
     const recaptchaVerifier = React.useRef(null);
     const [phoneNumber, setPhoneNumber] = React.useState();
     const [verificationId, setVerificationId] = React.useState();
@@ -86,7 +89,11 @@ export default function AuthenticationScreen() {
                             verificationId,
                             verificationCode
                         );
-                        await firebase.auth().signInWithCredential(credential);
+                        await firebase.auth().signInWithCredential(credential).then((result) => {
+                            const user = { ...userInfo, id: result.user.uid };
+                            createUser(user); // TODO: handle if this fails
+                        });
+
                         showMessage({ text: 'Phone authentication successful 👍' });
                     } catch (err) {
                         showMessage({ text: `Error: ${err.message}`, color: 'red' });

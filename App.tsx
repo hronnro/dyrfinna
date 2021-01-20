@@ -17,7 +17,9 @@ export default function App() {
   function onAuthStateChanged(user) {
     console.log('onAuthStateChange user', user);
     if (initializing) setInitializing(false);
-    if (user != null) setUser(user);
+    if (user != null) {
+      setUser(user);
+    };
   }
 
   useEffect(() => {

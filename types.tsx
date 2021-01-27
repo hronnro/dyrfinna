@@ -1,3 +1,13 @@
+import { User } from './FirestoreModels';
+export type LoggedOutParamList = {
+  Onboarding: undefined;
+  WelcomeApp: undefined;
+  UserInfo: undefined;
+  Authentication: {
+    userInfo?: User
+  };
+};
+
 export type RootStackParamList = {
   Root: undefined;
   NotFound: undefined;

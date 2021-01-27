@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
+import EditScreenInfo from '../components/EditScreenInfo';
+import { User } from '../FirestoreModels';
 
 export default function MyProfileScreen({ user }) {
   return (

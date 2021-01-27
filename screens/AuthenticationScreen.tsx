@@ -10,16 +10,21 @@ import {
     Platform,
 } from 'react-native';
 
+import * as firebase from 'firebase';
+import { firebaseConfig } from '../firebase';
 import Firebase from '../Firebase';
 import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
-import * as firebase from 'firebase';
+import { createUser } from '../api/UserStore';
+import { User } from '../FirestoreModels';
 
-export default function LoginScreen() {
+
+export default function AuthenticationScreen({ route }) {
+    const { userInfo } = route.params;
     const recaptchaVerifier = React.useRef(null);
     const [phoneNumber, setPhoneNumber] = React.useState();
     const [verificationId, setVerificationId] = React.useState();
     const [verificationCode, setVerificationCode] = React.useState();
-    const firebaseConfig = firebase.apps.length ? firebase.app().options : undefined;
+
     const [message, showMessage] = React.useState(
         !firebaseConfig || Platform.OS === 'web'
             ? {
@@ -84,7 +89,11 @@ export default function LoginScreen() {
                             verificationId,
                             verificationCode
                         );
-                        await firebase.auth().signInWithCredential(credential);
+                        await firebase.auth().signInWithCredential(credential).then((result) => {
+                            const user = { ...userInfo, id: result.user.uid };
+                            createUser(user); // TODO: handle if this fails
+                        });
+
                         showMessage({ text: 'Phone authentication successful 👍' });
                     } catch (err) {
                         showMessage({ text: `Error: ${err.message}`, color: 'red' });

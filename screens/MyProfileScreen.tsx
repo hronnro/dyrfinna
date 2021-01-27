@@ -6,12 +6,17 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { User } from '../FirestoreModels';
+import * as firebase from 'firebase';
 
 export default function MyProfileScreen({ user }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>My Profile</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <TouchableOpacity onPress={() => firebase.auth().signOut().then(() => {
+        console.log("logged out")
+      })} >
+        <Text style={styles.logoutButton}>Logout</Text>
+      </TouchableOpacity>
     </View >
   );
 }
@@ -26,6 +31,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  logoutButton: {
+    fontSize: 14,
+    padding: 20,
   },
   separator: {
     marginVertical: 30,

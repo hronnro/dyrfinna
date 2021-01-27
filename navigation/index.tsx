@@ -25,7 +25,6 @@ export default function Navigation({ colorScheme, user }: { colorScheme: ColorSc
 // Read more here: https://reactnavigation.org/docs/modal
 const Stack = createStackNavigator<RootStackParamList>();
 
-
 function RootNavigator({ user }) {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

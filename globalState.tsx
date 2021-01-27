@@ -11,7 +11,9 @@ export interface Store {
 
 const defaultState: StateContext = { user: null };
 const myContext = React.createContext({ state: defaultState });
+
 export const useStateContext = () => useContext(myContext);
+
 export const StateProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, defaultState);
     return <myContext.Provider value={{ state, dispatch }} children={children} />;

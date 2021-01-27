@@ -8,10 +8,30 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { User } from '../FirestoreModels';
 import * as firebase from 'firebase';
 
-export default function MyProfileScreen({ user }) {
+export default function MyProfileScreen({ user }: { user: User }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>My Profile</Text>
+      <View style={styles.userInfoBox}>
+        <View style={styles.userInfoRow}>
+          <Text style={styles.userInfo}>Name: </Text>
+          <Text style={styles.userInfo}>{user.name}</Text>
+        </View>
+        {
+          user.email ?
+            <View style={styles.userInfoRow}>
+              <Text style={styles.userInfo}>Email: </Text>
+              <Text style={styles.userInfo}>{user.email}</Text>
+            </View> : null
+        }
+        {
+          user.phoneNumber ?
+            <View style={styles.userInfoRow}>
+              <Text style={styles.userInfo}>Phone number: </Text>
+              <Text style={styles.userInfo}>{user.phoneNumber}</Text>
+            </View> : null
+        }
+      </View>
       <TouchableOpacity onPress={() => firebase.auth().signOut().then(() => {
         console.log("logged out")
       })} >
@@ -31,6 +51,17 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  userInfoBox: {
+    borderColor: "red",
+    padding: 20,
+    borderWidth: 2,
+  },
+  userInfoRow: {
+    flexDirection: "row",
+  },
+  userInfo: {
+    fontSize: 14,
   },
   logoutButton: {
     fontSize: 14,

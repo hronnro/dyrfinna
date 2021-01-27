@@ -10,6 +10,7 @@ import Navigation from './navigation';
 import { User } from './FirestoreModels';
 import { StateProvider, useStateContext } from './globalState';
 import { ActionType } from './reducer';
+import { getUser } from './api/UserStore';
 
 export default function Core() {
     const isLoadingComplete = useCachedResources();
@@ -17,15 +18,18 @@ export default function Core() {
     const [initializing, setInitializing] = useState(true);
     const { state, dispatch } = useStateContext();
     const { user } = state;
+    console.log("global state user", user);
 
-    function onAuthStateChanged(user: User) {
-        console.log('onAuthStateChange user', user);
+    function onAuthStateChanged(firebaseUser) {
+        console.log('onAuthStateChange user', firebaseUser);
         if (initializing) setInitializing(false);
-        if (user != null) {
-            dispatch({
-                type: ActionType.SIGN_IN,
-                payload: user
-            })
+        if (firebaseUser != null) {
+            getUser(firebaseUser.uid).then(user => {
+                dispatch({
+                    type: ActionType.SIGN_IN,
+                    payload: user
+                })
+            });
         } else {
             dispatch({
                 type: ActionType.SIGN_OUT,

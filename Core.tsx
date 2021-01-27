@@ -18,10 +18,8 @@ export default function Core() {
     const [initializing, setInitializing] = useState(true);
     const { state, dispatch } = useStateContext();
     const { user } = state;
-    console.log("global state user", user);
 
     function onAuthStateChanged(firebaseUser) {
-        console.log('onAuthStateChange user', firebaseUser);
         if (initializing) setInitializing(false);
         if (firebaseUser != null) {
             getUser(firebaseUser.uid).then(user => {

@@ -9,10 +9,11 @@ import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import MyProfileScreen from '../screens/MyProfileScreen';
 import { BottomTabParamList, TabOneParamList, MyProfileParamList } from '../types';
+import { User } from '../FirestoreModels';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
-export default function BottomTabNavigator({ navigation, user }) {
+export default function BottomTabNavigator({ user }: { user: User }) {
   const colorScheme = useColorScheme();
 
   return (
@@ -23,14 +24,14 @@ export default function BottomTabNavigator({ navigation, user }) {
         name="TabOne"
         component={TabOneNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }: { color: string }) => <TabBarIcon name="ios-code" color={color} />,
         }}
       />
       <BottomTab.Screen
         name="My Profile"
         children={() => <MyProfileNavigator user={user} />}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }: { color: string }) => <TabBarIcon name="ios-code" color={color} />,
         }}
       />
     </BottomTab.Navigator>
@@ -61,7 +62,7 @@ function TabOneNavigator() {
 
 const MyProfileStack = createStackNavigator<MyProfileParamList>();
 
-function MyProfileNavigator({ user }) {
+function MyProfileNavigator({ user }: { user: User }) {
   return (
     <MyProfileStack.Navigator>
       <MyProfileStack.Screen

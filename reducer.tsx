@@ -12,6 +12,6 @@ export const reducer = (state: StateContext, action: Action) => {
         case ActionType.SIGN_OUT:
             return { ...state, user: null };
         default:
-            throw new Error('Not among actions');
+            throw new Error('Called non-existent action');
     }
 };

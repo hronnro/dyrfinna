@@ -22,12 +22,21 @@ export default function Core() {
     function onAuthStateChanged(firebaseUser) {
         if (initializing) setInitializing(false);
         if (firebaseUser != null) {
-            getUser(firebaseUser.uid).then(user => {
-                dispatch({
-                    type: ActionType.SIGN_IN,
-                    payload: user
-                })
-            });
+            /**
+             * TODO: fix hack: 
+             * Using Settimeout cause otherwise firestore.rules failes
+             * as it says user was not authenticated.
+             */
+            setTimeout(() => {
+                getUser(firebaseUser.uid).then(user => {
+                    if (user != null) {
+                        dispatch({
+                            type: ActionType.SIGN_IN,
+                            payload: user
+                        })
+                    }
+                });
+            }, 1000);
         } else {
             dispatch({
                 type: ActionType.SIGN_OUT,

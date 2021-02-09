@@ -14,12 +14,14 @@ import * as firebase from 'firebase';
 import { firebaseConfig } from '../firebase';
 import Firebase from '../Firebase';
 import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
-import { createUser } from '../api/UserStore';
+import { createUser, getUser } from '../api/UserStore';
 import { User } from '../FirestoreModels';
-
+import { useStateContext } from '../globalState';
+import { ActionType } from '../reducer';
 
 export default function AuthenticationScreen({ route }) {
     const { userInfo } = route.params;
+    const { state, dispatch } = useStateContext();
     const recaptchaVerifier = React.useRef(null);
     const [phoneNumber, setPhoneNumber] = React.useState();
     const [verificationId, setVerificationId] = React.useState();
@@ -34,6 +36,17 @@ export default function AuthenticationScreen({ route }) {
             : undefined
     );
     const attemptInvisibleVerification = true;
+
+    function createUser(userId) {
+        if (userInfo != null) {
+            const user = { ...userInfo, id: userId };
+            createUser(user); // TODO: handle if this fails
+
+        } else {
+            showMessage({ text: `No user found - go back and fill in information!`, color: 'red' });
+        }
+    }
+
     return (
         <View style={{ padding: 20, marginTop: 50 }}>
             <FirebaseRecaptchaVerifierModal
@@ -90,11 +103,26 @@ export default function AuthenticationScreen({ route }) {
                             verificationCode
                         );
                         await firebase.auth().signInWithCredential(credential).then((result) => {
-                            const user = { ...userInfo, id: result.user.uid };
-                            createUser(user); // TODO: handle if this fails
-                        });
+                            if (result.additionalUserInfo.isNewUser) {
+                                createUser(result.user.uid);
+                            } else {
+                                getUser(result.user.uid).then(user => {
+                                    dispatch({
+                                        type: ActionType.SIGN_IN,
+                                        payload: user
+                                    })
+                                }).catch(() => {
+                                    /**
+                                     * User might have tried to log in without owning an account
+                                     * so firebase marks the user as !isNewUser.
+                                     * In this case we make sure to create the account as 
+                                     * no current account was found.
+                                     */
+                                    createUser(result.user.uid);
+                                })
 
-                        showMessage({ text: 'Phone authentication successful 👍' });
+                            }
+                        });
                     } catch (err) {
                         showMessage({ text: `Error: ${err.message}`, color: 'red' });
                     }

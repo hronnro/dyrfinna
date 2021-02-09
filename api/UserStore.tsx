@@ -11,7 +11,9 @@ export const createUser = (user: User) => {
         phoneNumber: user.phoneNumber ? user.phoneNumber : null,
         email: user.email ? user.email : null,
         profilePhoto: user.profilePhoto ? user.profilePhoto : null
-    });
+    }).then(() => {
+        console.log("successfully created user", user);
+    }).catch(err => console.log(err));
 }
 
 export const getUser = async (userId: string) => {

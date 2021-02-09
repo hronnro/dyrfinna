@@ -20,7 +20,7 @@ service cloud.firestore {
 
     match /users/{userId} {
       allow get: if isAuthenticated();
-      allow create: if request.auth.uid == request.resource.data.id;
+      allow create: if userId == request.auth.uid;
       allow update, delete: if request.auth.uid == resource.data.id;
     }
 

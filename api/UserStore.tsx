@@ -13,3 +13,10 @@ export const createUser = (user: User) => {
         profilePhoto: user.profilePhoto ? user.profilePhoto : null
     });
 }
+
+export const getUser = async (userId: string) => {
+    const db = firebase.firestore();
+    var usersRef = db.collection("users").doc(userId);
+    const user = await usersRef.get();
+    return user.data();
+}

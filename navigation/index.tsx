@@ -8,10 +8,11 @@ import { RootStackParamList } from '../types';
 import BottomTabNavigator from './BottomTabNavigator';
 import LoggedOutNavigator from './LoggedOutNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
+import { User } from '../FirestoreModels';
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
-export default function Navigation({ colorScheme, user }: { colorScheme: ColorSchemeName }) {
+export default function Navigation({ colorScheme, user }: { colorScheme: ColorSchemeName, user: User }) {
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
@@ -25,8 +26,7 @@ export default function Navigation({ colorScheme, user }: { colorScheme: ColorSc
 // Read more here: https://reactnavigation.org/docs/modal
 const Stack = createStackNavigator<RootStackParamList>();
 
-
-function RootNavigator({ user }) {
+function RootNavigator({ user }: { user: User }) {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {!user ?

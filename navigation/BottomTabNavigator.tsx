@@ -1,15 +1,19 @@
-import { Ionicons } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
-import React, { useState, useEffect } from 'react';
-import { CommonActions } from '@react-navigation/native';
+import { Ionicons } from "@expo/vector-icons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+import React, { useState, useEffect } from "react";
+import { CommonActions } from "@react-navigation/native";
 
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
-import MyProfileScreen from '../screens/MyProfileScreen';
-import { BottomTabParamList, TabOneParamList, MyProfileParamList } from '../types';
-import { User } from '../FirestoreModels';
+import Colors from "../constants/Colors";
+import useColorScheme from "../hooks/useColorScheme";
+import TabOneScreen from "../screens/TabOneScreen";
+import MyProfileScreen from "../screens/MyProfileScreen";
+import {
+  BottomTabParamList,
+  TabOneParamList,
+  MyProfileParamList,
+} from "../types";
+import { User } from "../FirestoreModels";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -19,19 +23,24 @@ export default function BottomTabNavigator({ user }: { user: User }) {
   return (
     <BottomTab.Navigator
       initialRouteName="TabOne"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+    >
       <BottomTab.Screen
         name="TabOne"
         component={TabOneNavigator}
         options={{
-          tabBarIcon: ({ color }: { color: string }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }: { color: string }) => (
+            <TabBarIcon name="ios-code" color={color} />
+          ),
         }}
       />
       <BottomTab.Screen
         name="My Profile"
         children={() => <MyProfileNavigator user={user} />}
         options={{
-          tabBarIcon: ({ color }: { color: string }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }: { color: string }) => (
+            <TabBarIcon name="ios-code" color={color} />
+          ),
         }}
       />
     </BottomTab.Navigator>
@@ -54,7 +63,7 @@ function TabOneNavigator() {
       <TabOneStack.Screen
         name="TabOneScreen"
         component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title' }}
+        options={{ headerTitle: "Tab One Title" }}
       />
     </TabOneStack.Navigator>
   );
@@ -68,7 +77,7 @@ function MyProfileNavigator({ user }: { user: User }) {
       <MyProfileStack.Screen
         name="MyProfileScreen"
         children={() => <MyProfileScreen user={user} />}
-        options={{ headerTitle: 'My Profile', foo: "foo" }}
+        options={{ headerTitle: "My Profile", foo: "foo" }}
       />
     </MyProfileStack.Navigator>
   );

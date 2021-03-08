@@ -1,22 +1,33 @@
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import React, { useEffect } from 'react';
-import { ColorSchemeName } from 'react-native';
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import React, { useEffect } from "react";
+import { ColorSchemeName } from "react-native";
 
-import NotFoundScreen from '../screens/NotFoundScreen';
-import { RootStackParamList } from '../types';
-import BottomTabNavigator from './BottomTabNavigator';
-import LoggedOutNavigator from './LoggedOutNavigator';
-import LinkingConfiguration from './LinkingConfiguration';
-import { User } from '../FirestoreModels';
+import NotFoundScreen from "../screens/NotFoundScreen";
+import { RootStackParamList } from "../types";
+import BottomTabNavigator from "./BottomTabNavigator";
+import LoggedOutNavigator from "./LoggedOutNavigator";
+import LinkingConfiguration from "./LinkingConfiguration";
+import { User } from "../FirestoreModels";
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
-export default function Navigation({ colorScheme, user }: { colorScheme: ColorSchemeName, user: User }) {
+export default function Navigation({
+  colorScheme,
+  user,
+}: {
+  colorScheme: ColorSchemeName;
+  user: User;
+}) {
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+    >
       <RootNavigator user={user} />
     </NavigationContainer>
   );
@@ -29,13 +40,21 @@ const Stack = createStackNavigator<RootStackParamList>();
 function RootNavigator({ user }: { user: User }) {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {!user ?
-        <Stack.Screen name="Root" component={LoggedOutNavigator} /> :
+      {!user ? (
+        <Stack.Screen name="Root" component={LoggedOutNavigator} />
+      ) : (
         <>
-          <Stack.Screen name="Root" children={() => <BottomTabNavigator user={user} />} />
-          <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+          <Stack.Screen
+            name="Root"
+            children={() => <BottomTabNavigator user={user} />}
+          />
+          <Stack.Screen
+            name="NotFound"
+            component={NotFoundScreen}
+            options={{ title: "Oops!" }}
+          />
         </>
-      }
+      )}
     </Stack.Navigator>
   );
 }

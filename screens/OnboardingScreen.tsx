@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Dimensions } from "react-native";
+import { Dimensions, Image, ImageSourcePropType } from "react-native";
 import Carousel from "react-native-snap-carousel";
 import styled from "styled-components/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -13,71 +13,60 @@ import {
 
 const width = Dimensions.get("window").width;
 
-const Container = styled.View`
+interface CarouselData {
+  headerSmall: String;
+  headerLarge: String;
+  img: ImageSourcePropType;
+  description: String;
+}
+
+const BaseContainer = styled.View`
   background-color: ${mainBackgroundColor};
 `;
 
-const CarouselItemContainerView = styled.View`
+const CarouselContainer = styled.View`
   background-color: ${mainBackgroundColor};
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 100%;
 `;
-const CarouselItemView = styled.View`
+const CarouselItem = styled.View`
   justify-content: center;
   width: 90%;
   height: 100%;
 `;
-
-const CarouselItemTitleSmallText = styled.Text`
+const CarouselItemTitle = styled.Text<{ isSmall: boolean }>`
   color: ${textDark};
-  font-size: 20px;
+  font-size: ${({ isSmall }) => (isSmall ? "20px" : "35px")};
   font-family: "MontserratBold";
 `;
-
-const CarouselItemTitleLargeText = styled.Text`
-  color: ${textDark};
-  font-size: 35px;
-  font-family: "MontserratBold";
-`;
-
-const CarouselItemCopyText = styled.Text`
+const CarouselItemDescription = styled.Text`
   color: ${textDark};
   margin-top: 10px;
   font-family: "MontserratRegular";
   line-height: 22px;
 `;
+
 const BottomContainer = styled.View`
   position: absolute;
   bottom: 0;
-
   align-items: center;
   height: 15%;
   width: 100%;
 `;
-const IndicatorContainerView = styled.View`
+const IndicatorContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
 `;
-
-const IndicatorInactiveView = styled.View`
+const Indicator = styled.View<{ active: boolean }>`
   width: 8px;
   height: 8px;
   margin-horizontal: 4px;
   border-radius: 8px;
-  background-color: ${inactiveBullet};
+  background-color: ${({ active }) => (active ? mainOrange : inactiveBullet)};
 `;
-
-const IndicatorActiveView = styled.View`
-  width: 8px;
-  height: 8px;
-  margin-horizontal: 4px;
-  border-radius: 8px;
-  background-color: ${mainOrange};
-`;
-
 const NextButton = styled.TouchableOpacity`
   position: absolute;
   bottom: 28px;
@@ -91,36 +80,35 @@ const NextButton = styled.TouchableOpacity`
 `;
 
 export default function OnboardingScreen({ onPress }: { onPress: Function }) {
-  interface CarouselData {
-    headerSmall: String;
-    headerLarge: String;
-    copy: String;
-  }
   const carouselRef = React.useRef<Carousel<CarouselData>>(null);
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const carouselData: Array<CarouselData> = [
     {
       headerSmall: "Velkomin/n í",
       headerLarge: "Dýrfinnu",
-      copy:
+      img: require("../assets/images/onboarding-1.png"),
+      description:
         "Dýrfinna er smáforrit sem styður ábyrgt gæludýrahald, hjálpar týndum dýrum að komast heim og styrkir sambönd gæludýraeigenda og dýravina.",
     },
     {
       headerSmall: "Skráðu gæludýrin",
       headerLarge: "á heimilinu",
-      copy:
+      img: require("../assets/images/onboarding-1.png"),
+      description:
         "Þannig getur þú auðveldlega tilkynnt dýrið týnt og fengið aðstoð frá fólki í nágrenninu við að leita eða fengið tilkynningar ef sést til dýrsins.",
     },
     {
       headerSmall: "Láttu vita ef þú sérð dýr sem",
       headerLarge: "gæti verið týnt",
-      copy:
+      img: require("../assets/images/onboarding-1.png"),
+      description:
         "Kettirnir sem við sjáum daglega eru ekki alltaf týndir, en stundum eru þeir búnir að vera týndir í langan tíma. Fylgstu með köttunum í hverfinu og láttu vita ef það birtist köttur sem þú kannast ekki við.",
     },
     {
       headerSmall: "Það geta allar tegundir",
       headerLarge: "gæludýra týnst",
-      copy:
+      img: require("../assets/images/onboarding-1.png"),
+      description:
         "Sum gæludýr eru ekki örmerkt og því mun erfiðara að finna eigendur, hjálpumst að að koma öllum gæludýrum heim.",
     },
   ];
@@ -133,22 +121,23 @@ export default function OnboardingScreen({ onPress }: { onPress: Function }) {
     index: Number;
   }) => {
     return (
-      <CarouselItemContainerView>
-        <CarouselItemView>
-          <CarouselItemTitleSmallText>
+      <CarouselContainer>
+        <CarouselItem>
+          <Image source={item.img} />
+          <CarouselItemTitle isSmall={true}>
             {item.headerSmall}
-          </CarouselItemTitleSmallText>
-          <CarouselItemTitleLargeText>
+          </CarouselItemTitle>
+          <CarouselItemTitle isSmall={false}>
             {item.headerLarge}
-          </CarouselItemTitleLargeText>
-          <CarouselItemCopyText>{item.copy}</CarouselItemCopyText>
-        </CarouselItemView>
-      </CarouselItemContainerView>
+          </CarouselItemTitle>
+          <CarouselItemDescription>{item.description}</CarouselItemDescription>
+        </CarouselItem>
+      </CarouselContainer>
     );
   };
 
   return (
-    <Container>
+    <BaseContainer>
       <Carousel
         ref={carouselRef}
         data={carouselData}
@@ -159,27 +148,21 @@ export default function OnboardingScreen({ onPress }: { onPress: Function }) {
         onSnapToItem={(index) => setCurrentIndex(index)}
       />
       <BottomContainer>
-        <IndicatorContainerView>
+        <IndicatorContainer>
           {carouselData.map((element, index) => {
-            if (index == currentIndex) {
-              return <IndicatorActiveView />;
-            } else {
-              return <IndicatorInactiveView />;
-            }
+            return <Indicator active={index == currentIndex} />;
           })}
-        </IndicatorContainerView>
+        </IndicatorContainer>
         <NextButton
           onPress={() => {
-            if (currentIndex === carouselData.length - 1) {
-              onPress();
-            } else {
-              carouselRef.current?.snapToNext();
-            }
+            currentIndex === carouselData.length - 1
+              ? onPress()
+              : carouselRef.current?.snapToNext();
           }}
         >
           <Ionicons name="arrow-forward-outline" size={36} color="white" />
         </NextButton>
       </BottomContainer>
-    </Container>
+    </BaseContainer>
   );
 }

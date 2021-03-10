@@ -121,7 +121,7 @@ export default function OnboardingScreen({ onPress }: { onPress: Function }) {
     index: Number;
   }) => {
     return (
-      <CarouselContainer>
+      <CarouselContainer key={`${index}`}>
         <CarouselItem>
           <Image source={item.img} />
           <CarouselItemTitle isSmall={true}>
@@ -150,7 +150,9 @@ export default function OnboardingScreen({ onPress }: { onPress: Function }) {
       <BottomContainer>
         <IndicatorContainer>
           {carouselData.map((element, index) => {
-            return <Indicator active={index == currentIndex} />;
+            return (
+              <Indicator key={`${index}`} active={index == currentIndex} />
+            );
           })}
         </IndicatorContainer>
         <NextButton

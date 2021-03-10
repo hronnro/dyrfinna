@@ -6,7 +6,6 @@ import { LoggedOutParamList } from "../types";
 import AuthenticationScreen from "../screens/AuthenticationScreen";
 import OnboardingScreen from "../screens/OnboardingScreen";
 import UserInfoScreen from "../screens/UserInfoScreen";
-import WelcomeScreen from "../screens/WelcomeScreen";
 import { User } from "../FirestoreModels";
 
 const Stack = createStackNavigator<LoggedOutParamList>();
@@ -17,21 +16,7 @@ export default function LoggedOutNavigator({ navigation }) {
       <Stack.Screen
         name="Onboarding"
         children={() => (
-          <OnboardingScreen
-            onPress={() => navigation.navigate("WelcomeScreen")}
-          />
-        )}
-      />
-      <Stack.Screen
-        name="WelcomeScreen"
-        children={() => (
-          <WelcomeScreen
-            onPress={(alreadyHasAccount: boolean) => {
-              alreadyHasAccount
-                ? navigation.navigate("Authentication", { userInfo: null })
-                : navigation.navigate("UserInfo");
-            }}
-          />
+          <OnboardingScreen onPress={() => navigation.navigate("UserInfo")} />
         )}
       />
       <Stack.Screen

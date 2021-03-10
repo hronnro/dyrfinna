@@ -1,12 +1,11 @@
-import * as React from 'react';
-import { StyleSheet } from 'react-native';
-import { useRoute } from '@react-navigation/native';
-import { Text, View } from '../components/Themed';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import * as React from "react";
+import { StyleSheet } from "react-native";
+import { useRoute } from "@react-navigation/native";
+import { Text, View } from "../components/Themed";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { User } from '../FirestoreModels';
-import * as firebase from 'firebase';
+import { User } from "../FirestoreModels";
+import * as firebase from "firebase";
 
 export default function MyProfileScreen({ user }: { user: User }) {
   return (
@@ -17,40 +16,44 @@ export default function MyProfileScreen({ user }: { user: User }) {
           <Text style={styles.userInfo}>Name: </Text>
           <Text style={styles.userInfo}>{user.name}</Text>
         </View>
-        {
-          user.email ?
-            <View style={styles.userInfoRow}>
-              <Text style={styles.userInfo}>Email: </Text>
-              <Text style={styles.userInfo}>{user.email}</Text>
-            </View> : null
-        }
-        {
-          user.phoneNumber ?
-            <View style={styles.userInfoRow}>
-              <Text style={styles.userInfo}>Phone number: </Text>
-              <Text style={styles.userInfo}>{user.phoneNumber}</Text>
-            </View> : null
-        }
+        {user.email ? (
+          <View style={styles.userInfoRow}>
+            <Text style={styles.userInfo}>Email: </Text>
+            <Text style={styles.userInfo}>{user.email}</Text>
+          </View>
+        ) : null}
+        {user.phoneNumber ? (
+          <View style={styles.userInfoRow}>
+            <Text style={styles.userInfo}>Phone number: </Text>
+            <Text style={styles.userInfo}>{user.phoneNumber}</Text>
+          </View>
+        ) : null}
       </View>
-      <TouchableOpacity onPress={() => firebase.auth().signOut().then(() => {
-        console.log("logged out")
-      })} >
+      <TouchableOpacity
+        onPress={() =>
+          firebase
+            .auth()
+            .signOut()
+            .then(() => {
+              console.log("logged out");
+            })
+        }
+      >
         <Text style={styles.logoutButton}>Logout</Text>
       </TouchableOpacity>
-    </View >
+    </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   userInfoBox: {
     borderColor: "red",
@@ -70,6 +73,6 @@ const styles = StyleSheet.create({
   separator: {
     marginVertical: 30,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
 });

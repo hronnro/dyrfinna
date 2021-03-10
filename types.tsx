@@ -1,10 +1,10 @@
-import { User } from './FirestoreModels';
+import { User } from "./FirestoreModels";
 export type LoggedOutParamList = {
   Onboarding: undefined;
   WelcomeApp: undefined;
   UserInfo: undefined;
   Authentication: {
-    userInfo?: User
+    userInfo?: User;
   };
 };
 
@@ -24,6 +24,6 @@ export type TabOneParamList = {
 
 export type MyProfileParamList = {
   MyProfileScreen: {
-    user: string
+    user: string;
   };
 };

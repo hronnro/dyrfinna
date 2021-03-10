@@ -1,36 +1,34 @@
-
 type userId = string;
 
 // /user/{userId}
 export type User = {
-  id: userId,
-  name: string,
-  phoneNumber?: string,
-  email?: string,
-  profilePhoto?: string,
+  id: userId;
+  name: string;
+  phoneNumber?: string;
+  email?: string;
+  profilePhoto?: string;
 };
 
 type petId = string;
 
 // /pet/{petId}
 export type Pet = {
-  id: petId,
-  name: string,
-  ownerId: userId,
-  photos?: string[],
+  id: petId;
+  name: string;
+  ownerId: userId;
+  photos?: string[];
 };
 
-
 type Coordinates = {
-  latitude: number,
-  longitude: number
-}
+  latitude: number;
+  longitude: number;
+};
 
 type Location = {
-  id: string,
-  name: string,
-  description: string,
-  coordinates: Coordinates
+  id: string;
+  name: string;
+  description: string;
+  coordinates: Coordinates;
 };
 
 type searchId = string;
@@ -43,14 +41,13 @@ enum SearchStatus {
 
 // /search/{searchId}
 export type Search = {
-  id: searchId,
-  petId: petId,
-  status: SearchStatus,
-  createdAt: Date,
-  description: string,
-  locations: Location[],
+  id: searchId;
+  petId: petId;
+  status: SearchStatus;
+  createdAt: Date;
+  description: string;
+  locations: Location[];
 };
-
 
 enum SearchRole {
   Admin = "admin",
@@ -59,30 +56,28 @@ enum SearchRole {
 
 // /search/{searchId}/members/{userId}
 export type SearchMember = {
-  id: userId,
-  role: SearchRole,
-}
-
+  id: userId;
+  role: SearchRole;
+};
 
 type spotId = string;
 
 // /search/{searchId}/spotted/{spotId}
 export type PetSpotted = {
-  id: spotId,
-  userId: userId,
-  spottedAt: Date,
-  createdAt: Date,
-  coordinates: Coordinates,
-}
-
+  id: spotId;
+  userId: userId;
+  spottedAt: Date;
+  createdAt: Date;
+  coordinates: Coordinates;
+};
 
 type postId = string;
 
 // /search/{searchId}/feed/{postId}
 export type Post = {
-  id: postId,
-  userId: userId,
-  createdAt: Date,
-  text: string,
-  photo?: string
-}
+  id: postId;
+  userId: userId;
+  createdAt: Date;
+  text: string;
+  photo?: string;
+};

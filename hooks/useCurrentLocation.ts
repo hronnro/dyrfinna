@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import * as Location from 'expo-location';
+import React, { useState, useEffect } from "react";
+import * as Location from "expo-location";
 
 export default function useCachedResources() {
   const [location, setLocation] = useState(null);
@@ -8,12 +8,14 @@ export default function useCachedResources() {
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Balanced});
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced,
+      });
       setLocation(location);
     })();
   }, []);

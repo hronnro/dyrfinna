@@ -1,69 +1,112 @@
-import * as React from 'react';
-import { StyleSheet, Dimensions, TouchableOpacity, TextInput } from 'react-native';
+import * as React from "react";
+import styled from "styled-components/native";
+import { Ionicons } from "@expo/vector-icons";
+import {
+  mainBackgroundColor,
+  mainOrange,
+  textDark,
+  textDarkLighter,
+} from "../constants/StyleColors";
 
-import { Text, View } from '../components/Themed';
+const BaseContainer = styled.View`
+  background-color: ${mainBackgroundColor};
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+`;
 
-export default function UserInfoScreen({ onPress }) {
-    let [username, setUsername] = React.useState("");
-    let [email, setEmail] = React.useState("");
-    let [phoneNumber, setPhoneNumber] = React.useState("");
+const Container = styled.View`
+  width: 80%;
+`;
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.headerText} >
-                {"User Info Screen"}
-            </Text>
-            <TextInput
-                style={styles.textInput}
-                placeholder="username"
-                onChangeText={text => setUsername(() => text)}
-                value={username}
-            />
-            <TextInput
-                style={styles.textInput}
-                placeholder="email"
-                keyboardType="email-address"
-                onChangeText={text => setEmail(() => text)}
-                value={email}
-            />
-            <TextInput
-                style={styles.textInput}
-                placeholder="Phone number"
-                keyboardType="numeric"
-                onChangeText={text => setPhoneNumber(() => text)}
-                value={phoneNumber}
-            />
-            <TouchableOpacity disabled={username === ""} onPress={() => onPress({
-                id: "",
-                name: username,
-                email: email,
-                phoneNumber: phoneNumber
-            })} >
-                <Text>
-                    {"Next"}
-                </Text>
-            </TouchableOpacity>
-        </View>
-    );
+const HeaderText = styled.Text`
+  color: ${textDark};
+  font-family: "MontserratBold";
+  font-size: 30px;
+  margin-vertical: 20px;
+`;
+
+const InputBox = styled.TextInput`
+  height: 40px;
+  background-color: #ffffff;
+  border-radius: 24px;
+  margin-vertical: 7px;
+  padding-horizontal: 20px;
+  font-family: "MontserratRegular";
+  color: ${textDark};
+`;
+const SubmitButton = styled.TouchableOpacity`
+  height: 47px;
+  width: 100px;
+  background-color: ${mainOrange};
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+  border-radius: 23px;
+  align-self: flex-end;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
+const BottomContainer = styled.TouchableOpacity`
+  position: absolute;
+  bottom: 50px;
+  left: 40px;
+`;
+
+const AlreadyHaveAccount = styled.Text`
+  color: ${textDark};
+  font-family: "MontserratRegular";
+  font-size: 12px;
+`;
+
+export default function UserInfoScreen({ onPress }: { onPress: Function }) {
+  let [username, setUsername] = React.useState("");
+  let [email, setEmail] = React.useState("");
+  let [phoneNumber, setPhoneNumber] = React.useState("");
+
+  return (
+    <BaseContainer>
+      <Container>
+        <HeaderText>{"Nýskráning"}</HeaderText>
+        <InputBox
+          placeholder="Notendanafn"
+          onChangeText={(text) => setUsername(() => text)}
+          value={username}
+          placeholderTextColor={`${textDarkLighter}`}
+        />
+        <InputBox
+          placeholder="Netfang"
+          keyboardType="email-address"
+          onChangeText={(text) => setEmail(() => text)}
+          value={email}
+          placeholderTextColor={`${textDarkLighter}`}
+        />
+        <InputBox
+          placeholder="Farsímanúmer"
+          keyboardType="numeric"
+          onChangeText={(text) => setPhoneNumber(() => text)}
+          value={phoneNumber}
+          placeholderTextColor={`${textDarkLighter}`}
+        />
+        <SubmitButton
+          disabled={username === ""}
+          onPress={() =>
+            onPress({
+              id: "",
+              name: username,
+              email: email,
+              phoneNumber: phoneNumber,
+            })
+          }
+        >
+          <Ionicons name="arrow-forward-outline" size={36} color="white" />
+        </SubmitButton>
+      </Container>
+      <BottomContainer onPress={() => onPress(null)}>
+        <AlreadyHaveAccount>
+          {"Áttu aðgang nú þegar? Smelltu hér."}
+        </AlreadyHaveAccount>
+      </BottomContainer>
+    </BaseContainer>
+  );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
-        backgroundColor: "yellow",
-        alignItems: "center",
-        justifyContent: "center"
-    },
-    headerText: {
-        fontSize: 20,
-        paddingVertical: 20
-    },
-    textInput: {
-        borderColor: "#000000",
-        borderWidth: 2,
-        padding: 5,
-        margin: 5,
-        width: "60%"
-    }
-});

@@ -8,12 +8,13 @@ export default {
         screens: {
           TabOne: {
             screens: {
-              TabOneScreen: "one",
+              TabOneScreen: "TabOneScreen",
             },
           },
           MyProfile: {
             screens: {
-              MyProfileScreen: "two",
+              MyProfileScreen: "MyProfileScreen",
+              AddPetScreen: "AddPetScreen",
             },
           },
         },

@@ -11,6 +11,10 @@ export type LoggedOutParamList = {
 export type RootStackParamList = {
   Root: undefined;
   NotFound: undefined;
+  LoggedOut: undefined;
+  AddPetScreen: {
+    user: string;
+  };
 };
 
 export type BottomTabParamList = {
@@ -24,6 +28,9 @@ export type TabOneParamList = {
 
 export type MyProfileParamList = {
   MyProfileScreen: {
+    user: string;
+  };
+  AddPetScreen: {
     user: string;
   };
 };

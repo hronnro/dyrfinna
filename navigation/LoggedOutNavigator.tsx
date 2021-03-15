@@ -12,7 +12,7 @@ const Stack = createStackNavigator<LoggedOutParamList>();
 
 export default function LoggedOutNavigator({ navigation }) {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator>
       <Stack.Screen
         name="Onboarding"
         children={() => (

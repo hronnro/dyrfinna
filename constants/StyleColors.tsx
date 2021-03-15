@@ -3,3 +3,4 @@ export const mainOrange = "#FD835E";
 export const textDark = "#282928";
 export const textDarkLighter = "#28292899";
 export const inactiveBullet = "#282928";
+export const whiteOpague = "#F4F7F647";

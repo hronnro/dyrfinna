@@ -12,7 +12,7 @@ import Navigation from "./navigation";
 import { User } from "./FirestoreModels";
 import { StateProvider, useStateContext } from "./globalState";
 import { ActionType } from "./reducer";
-import { getUser } from "./api/UserStore";
+import { getUser, userListener } from "./api/UserStore";
 
 export default function Core() {
   const isLoadingComplete = useCachedResources();
@@ -50,7 +50,6 @@ export default function Core() {
 
   async function loadFonts() {
     let loadedFonts = await Font.loadAsync({
-      // Load a font `Montserrat` from a static resource
       MontserratBold: require("./assets/fonts/Montserrat-Bold.ttf"),
       MontserratRegular: require("./assets/fonts/Montserrat-Regular.ttf"),
     });
@@ -59,8 +58,29 @@ export default function Core() {
 
   useEffect(() => {
     const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
+    return subscriber;
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      /**
+       * Listen to any changes to the logged in user to make sure
+       * we have correct and up-to-date user object throughout the app.
+       */
+      const db = firebase.firestore();
+      const subscriber = db
+        .collection("users")
+        .doc(user.id)
+        .onSnapshot((snapshot) => {
+          dispatch({
+            type: ActionType.USER_UPDATE,
+            payload: snapshot.data(),
+          });
+        });
+
+      return subscriber;
+    }
+  }, [user]);
 
   if (!isLoadingComplete || initializing || !appIsReady) {
     return (

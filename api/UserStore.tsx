@@ -2,6 +2,7 @@ import { firebase } from "../firebase";
 import "firebase/firestore";
 
 import { User } from "../FirestoreModels";
+const db = firebase.firestore();
 
 export const createUser = (user: User) => {
   const db = firebase.firestore();

@@ -24,9 +24,9 @@ service cloud.firestore {
       allow update, delete: if request.auth.uid == resource.data.id;
     }
 
-    match /pet/{petId} {
+    match /pets/{petId} {
       allow get: if isAuthenticated();
-      allow create: if request.auth.uid == request.resource.data.ownerId;
+      allow create: if isAuthenticated();
       allow update, delete: if request.auth.uid == resource.data.ownerId;
     }
 

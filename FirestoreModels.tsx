@@ -7,9 +7,15 @@ export type User = {
   phoneNumber?: string;
   email?: string;
   profilePhoto?: string;
+  pets?: string[];
 };
 
 type petId = string;
+
+export type Coordinates = {
+  latitude: number;
+  longitude: number;
+};
 
 // /pet/{petId}
 export type Pet = {
@@ -17,11 +23,12 @@ export type Pet = {
   name: string;
   ownerId: userId;
   photos?: string[];
-};
-
-type Coordinates = {
-  latitude: number;
-  longitude: number;
+  chipId?: string;
+  petType: string;
+  gender: string;
+  breed?: string;
+  birthDate: Date;
+  homeAddress?: Coordinates;
 };
 
 type Location = {

@@ -4,6 +4,7 @@ import MapView, { Marker } from "react-native-maps";
 
 import useCurrentLocation from "../hooks/useCurrentLocation";
 import { Text, View } from "../components/Themed";
+import { Coordinates } from "../FirestoreModels";
 
 function GreenMarker() {
   return (
@@ -39,6 +40,10 @@ export default function LocationPicker({
   initialLocation,
   onLocation,
   onCancel,
+}: {
+  initialLocation?: Coordinates;
+  onLocation: Function;
+  onCancel: Function;
 }) {
   let [currentLocation, locationError] = useCurrentLocation();
   let [location, setLocation] = React.useState(

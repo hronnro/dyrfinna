@@ -18,12 +18,12 @@ export type RootStackParamList = {
 };
 
 export type BottomTabParamList = {
-  TabOne: undefined;
+  ActiveSearches: undefined;
   MyProfile: undefined;
 };
 
-export type TabOneParamList = {
-  TabOneScreen: undefined;
+export type ActiveSearchesParamList = {
+  ActiveSearchesScreen: undefined;
 };
 
 export type MyProfileParamList = {

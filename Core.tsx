@@ -26,7 +26,6 @@ export default function Core() {
     console.log("auth state changed");
     if (initializing) setInitializing(false);
     if (firebaseUser != null) {
-      console.log("firebaseUser", firebaseUser);
       /**
        * TODO: fix hack:
        * Using Settimeout cause otherwise firestore.rules failes

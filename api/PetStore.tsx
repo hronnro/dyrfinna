@@ -7,7 +7,6 @@ import { updateUser } from "./UserStore";
 export const createPet = (user: User, pet: Pet) => {
   const db = firebase.firestore();
   const docRef = db.collection("pets").doc();
-  console.log("ID", docRef.id);
   docRef
     .set({
       id: docRef.id,
@@ -38,24 +37,6 @@ export const getMyPets = async (user: User) => {
       .where("id", "in", user.pets)
       .get()
       .then((snapshot) => {
-        let pets: Pet[] = [];
-        snapshot.forEach((doc) => {
-          pets.push(doc.data());
-        });
-        return pets;
-      });
-    return await petsRef;
-  } else return [];
-};
-
-export const getMyPetsSubscriber = async (user: User) => {
-  const db = firebase.firestore();
-  if (user.pets) {
-    var petsRef = db
-      .collection("pets")
-      .where("id", "in", user.pets)
-      .get()
-      .onSnapshot((snapshot) => {
         let pets: Pet[] = [];
         snapshot.forEach((doc) => {
           pets.push(doc.data());

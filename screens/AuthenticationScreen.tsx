@@ -112,7 +112,6 @@ export default function AuthenticationScreen({ route }) {
               .signInWithCredential(credential)
               .then((result) => {
                 if (result.additionalUserInfo.isNewUser) {
-                  console.log("About to create new user!");
                   createNewUser(result.user.uid);
                 } else {
                   getUser(result.user.uid)

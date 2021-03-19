@@ -23,8 +23,10 @@ export default function Core() {
   const { user } = state;
 
   function onAuthStateChanged(firebaseUser) {
+    console.log("auth state changed");
     if (initializing) setInitializing(false);
     if (firebaseUser != null) {
+      console.log("firebaseUser", firebaseUser);
       /**
        * TODO: fix hack:
        * Using Settimeout cause otherwise firestore.rules failes
@@ -80,7 +82,7 @@ export default function Core() {
 
       return subscriber;
     }
-  }, [user]);
+  }, []);
 
   if (!isLoadingComplete || initializing || !appIsReady) {
     return (

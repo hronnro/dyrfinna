@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components/native";
 
-import { User } from "../FirestoreModels";
+import { Pet, User } from "../FirestoreModels";
 import * as firebase from "firebase";
 import {
   mainBackgroundColor,
@@ -10,6 +10,7 @@ import {
 } from "../constants/StyleColors";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { getMyPets } from "../api/PetStore";
 
 const BaseContainer = styled.View`
   height: 100%;
@@ -65,7 +66,25 @@ const MyPetsHeaderContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
 `;
-
+const MyPetsContainer = styled.ScrollView`
+  width: 100%;
+  height: 140px;
+`;
+const MyPetContainer = styled.View`
+  width: 100px;
+  height: 100px;
+  border-color: ${mainOrange};
+  border-width: 2px;
+  border-radius: 20px;
+  align-items: center;
+  justify-content: center;
+  margin-horizontal: 15px;
+  margin-top: 20px;
+`;
+const MyPetName = styled.Text`
+  font-size: 14px;
+  font-family: "MontserratBold";
+`;
 const MyPetsHeader = styled.Text`
   font-size: 22px;
   font-family: "MontserratBold";
@@ -96,7 +115,15 @@ const LogoutButtonText = styled.Text`
   font-family: "MontserratRegular";
   font-size: 14px;
 `;
+
+// function fetchMyPets(user: User, setMyPets) {
+//   getMyPets(user).then((pets) => setMyPets(pets));
+// }
+
 export default function MyProfileScreen({ user }: { user: User }) {
+  const [myPets, setMyPets] = React.useState<null | Pet[]>(null);
+  const navigation = useNavigation();
+
   const renderIcon = (iconName) => {
     return (
       <IconContainer>
@@ -104,7 +131,17 @@ export default function MyProfileScreen({ user }: { user: User }) {
       </IconContainer>
     );
   };
-  const navigation = useNavigation();
+  const fetchPets = async () => {
+    const result = await getMyPets(user).then((pets) => {
+      return pets;
+    });
+    setMyPets(result);
+  };
+
+  React.useEffect(() => {
+    fetchPets();
+  }, []);
+
   return (
     <BaseContainer>
       <MyPetsList>
@@ -114,6 +151,17 @@ export default function MyProfileScreen({ user }: { user: User }) {
             <Ionicons name="add-outline" size={26} color="white" />
           </AddPetButton>
         </MyPetsHeaderContainer>
+        <MyPetsContainer horizontal={true}>
+          {myPets && myPets.length > 0
+            ? myPets.map((pet) => {
+                return (
+                  <MyPetContainer key={pet.id}>
+                    <MyPetName>{pet.name}</MyPetName>
+                  </MyPetContainer>
+                );
+              })
+            : null}
+        </MyPetsContainer>
       </MyPetsList>
       <UserInfoContainer>
         <UserInfoHeader>Mínar Upplýsingar</UserInfoHeader>

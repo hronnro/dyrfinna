@@ -40,7 +40,7 @@ export default function AuthenticationScreen({ route }) {
   );
   const attemptInvisibleVerification = true;
 
-  function createUser(userId) {
+  function createNewUser(userId) {
     if (userInfo != null) {
       const user = { ...userInfo, id: userId };
       createUser(user); // TODO: handle if this fails
@@ -112,7 +112,8 @@ export default function AuthenticationScreen({ route }) {
               .signInWithCredential(credential)
               .then((result) => {
                 if (result.additionalUserInfo.isNewUser) {
-                  createUser(result.user.uid);
+                  console.log("About to create new user!");
+                  createNewUser(result.user.uid);
                 } else {
                   getUser(result.user.uid)
                     .then((user) => {

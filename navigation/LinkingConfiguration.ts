@@ -6,9 +6,9 @@ export default {
     screens: {
       Root: {
         screens: {
-          TabOne: {
+          ActiveSearches: {
             screens: {
-              TabOneScreen: "TabOneScreen",
+              ActiveSearchesScreen: "ActiveSearchesScreen",
             },
           },
           MyProfile: {

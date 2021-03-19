@@ -6,11 +6,11 @@ import { CommonActions } from "@react-navigation/native";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import TabOneScreen from "../screens/TabOneScreen";
+import ActiveSearchesScreen from "../screens/ActiveSearchesScreen";
 import MyProfileScreen from "../screens/MyProfileScreen";
 import {
   BottomTabParamList,
-  TabOneParamList,
+  ActiveSearchesParamList,
   MyProfileParamList,
 } from "../types";
 import { User } from "../FirestoreModels";
@@ -22,12 +22,12 @@ export default function BottomTabNavigator({ user }: { user: User }) {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="ActiveSearches"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
     >
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneNavigator}
+        name="ActiveSearches"
+        component={ActiveSearchesNavigator}
         options={{
           tabBarIcon: ({ color }: { color: string }) => (
             <TabBarIcon name="ios-code" color={color} />
@@ -55,17 +55,17 @@ function TabBarIcon(props: { name: string; color: string }) {
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabOneStack = createStackNavigator<TabOneParamList>();
+const ActiveSearchesStack = createStackNavigator<ActiveSearchesParamList>();
 
-function TabOneNavigator() {
+function ActiveSearchesNavigator() {
   return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="TabOneScreen"
-        component={TabOneScreen}
-        options={{ headerTitle: "Tab One Title" }}
+    <ActiveSearchesStack.Navigator>
+      <ActiveSearchesStack.Screen
+        name="ActiveSearchesScreen"
+        component={ActiveSearchesScreen}
+        options={{ headerShown: false }}
       />
-    </TabOneStack.Navigator>
+    </ActiveSearchesStack.Navigator>
   );
 }
 

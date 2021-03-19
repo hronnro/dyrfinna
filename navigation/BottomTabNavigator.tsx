@@ -35,7 +35,7 @@ export default function BottomTabNavigator({ user }: { user: User }) {
         }}
       />
       <BottomTab.Screen
-        name="My Profile"
+        name="MyProfile"
         children={() => <MyProfileNavigator user={user} />}
         options={{
           tabBarIcon: ({ color }: { color: string }) => (
@@ -77,7 +77,7 @@ function MyProfileNavigator({ user }: { user: User }) {
       <MyProfileStack.Screen
         name="MyProfileScreen"
         children={() => <MyProfileScreen user={user} />}
-        options={{ headerTitle: "My Profile", foo: "foo" }}
+        options={{ headerShown: false }}
       />
     </MyProfileStack.Navigator>
   );

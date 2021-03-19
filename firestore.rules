@@ -20,13 +20,15 @@ service cloud.firestore {
 
     match /users/{userId} {
       allow get: if isAuthenticated();
+      allow read: if isAuthenticated();
       allow create: if userId == request.auth.uid;
       allow update, delete: if request.auth.uid == resource.data.id;
     }
 
-    match /pet/{petId} {
+    match /pets/{petId} {
+    	allow read: if isAuthenticated();
       allow get: if isAuthenticated();
-      allow create: if request.auth.uid == request.resource.data.ownerId;
+      allow create: if isAuthenticated();
       allow update, delete: if request.auth.uid == resource.data.ownerId;
     }
 

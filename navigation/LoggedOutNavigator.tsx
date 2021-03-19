@@ -12,15 +12,17 @@ const Stack = createStackNavigator<LoggedOutParamList>();
 
 export default function LoggedOutNavigator({ navigation }) {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator>
       <Stack.Screen
         name="Onboarding"
+        options={{ headerShown: false }}
         children={() => (
           <OnboardingScreen onPress={() => navigation.navigate("UserInfo")} />
         )}
       />
       <Stack.Screen
         name="UserInfo"
+        options={{ headerShown: false }}
         children={() => (
           <UserInfoScreen
             onPress={(userInfo: User) =>
@@ -29,7 +31,11 @@ export default function LoggedOutNavigator({ navigation }) {
           />
         )}
       />
-      <Stack.Screen name="Authentication" component={AuthenticationScreen} />
+      <Stack.Screen
+        name="Authentication"
+        options={{ headerShown: false }}
+        component={AuthenticationScreen}
+      />
     </Stack.Navigator>
   );
 }

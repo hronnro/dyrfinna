@@ -2,6 +2,7 @@ import { firebase } from "../firebase";
 import "firebase/firestore";
 
 import { User } from "../FirestoreModels";
+const db = firebase.firestore();
 
 export const createUser = (user: User) => {
   const db = firebase.firestore();
@@ -25,4 +26,9 @@ export const getUser = async (userId: string) => {
   var usersRef = db.collection("users").doc(userId);
   const user = await usersRef.get();
   return user.data();
+};
+
+export const updateUser = (user: User) => {
+  const db = firebase.firestore();
+  db.collection("users").doc(user.id).update(user);
 };

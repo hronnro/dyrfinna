@@ -8,6 +8,7 @@ import {
   mainBackgroundColor,
   mainOrange,
   placeholder,
+  textDark,
 } from "../constants/StyleColors";
 import Header from "../components/Header";
 import LocationPicker from "./LocationPicker";
@@ -131,13 +132,11 @@ const PickerBackground = styled.View`
 `;
 const PickerContainer = styled.View`
   background-color: ${mainBackgroundColor};
-  padding: 20px;
-  width: 90%;
+  padding-vertical: 40px;
+  width: 70%;
   align-items: center;
   justify-content: center;
   border-radius: 30px;
-  border-width: 2px;
-  border-color: ${mainOrange};
 `;
 
 const PickerItem = styled.TouchableOpacity`
@@ -150,11 +149,12 @@ const PickerItem = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   border-color: ${mainOrange};
-  border-width: 2px;
+  border-width: 1px;
 `;
 const PickerItemText = styled.Text`
   font-family: "MontserratRegular";
   font-size: 14px;
+  color: ${textDark};
 `;
 
 const SubmitButton = styled.TouchableOpacity`
@@ -365,6 +365,7 @@ export default function AddPetScreen({ user }: { user: User }) {
               value={petAge}
               display="default"
               onChange={(event, date) => setPetAge(date)}
+              maximumDate={Date.now()}
             />
           </DatePickerContainer>
           <PickerValueContainerView pointerEvents={"none"}>
@@ -422,6 +423,7 @@ export default function AddPetScreen({ user }: { user: User }) {
             {petCategories.map((item) => {
               return (
                 <PickerItem
+                  key={item.label}
                   onPress={() => {
                     setPetCategory(item);
                     setShowCategoryPicker(false);
@@ -440,6 +442,7 @@ export default function AddPetScreen({ user }: { user: User }) {
             {petGenders.map((item) => {
               return (
                 <PickerItem
+                  key={item.label}
                   onPress={() => {
                     setPetGender(item);
                     setShowGenderPicker(false);
@@ -458,6 +461,7 @@ export default function AddPetScreen({ user }: { user: User }) {
             {petSizes.map((item) => {
               return (
                 <PickerItem
+                  key={item.label}
                   onPress={() => {
                     setPetSize(item);
                     setShowSizePicker(false);

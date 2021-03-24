@@ -4,11 +4,7 @@ import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { Coordinates, Pet, User } from "../FirestoreModels";
-import {
-  mainBackgroundColor,
-  mainOrange,
-  whiteOpague,
-} from "../constants/StyleColors";
+import { mainBackgroundColor, mainOrange } from "../constants/StyleColors";
 import Header from "../components/Header";
 import LocationPicker from "./LocationPicker";
 import { createPet } from "../api/PetStore";
@@ -157,6 +153,21 @@ let petCategories: Array<pickerType> = [
   },
 ];
 
+let petSizes: Array<pickerType> = [
+  {
+    label: "Lítið",
+    value: "small",
+  },
+  {
+    label: "Miðlungs",
+    value: "medium",
+  },
+  {
+    label: "Stórt",
+    value: "large",
+  },
+];
+
 export default function AddPetScreen({ user }: { user: User }) {
   let [petName, setPetName] = React.useState("");
   let [chipNumber, setChipNumber] = React.useState("");
@@ -165,14 +176,14 @@ export default function AddPetScreen({ user }: { user: User }) {
   let [petAge, setPetAge] = React.useState(new Date());
   let [petBreed, setPetBreed] = React.useState("");
   let [petGender, setPetGender] = React.useState(petGenders[0]);
-  let [petAllergies, setPetAllergies] = React.useState("");
-  let [petSize, setPetSize] = React.useState(null);
+  let [petSize, setPetSize] = React.useState(petSizes[0]);
   let [petAddress, setPetAddress] = React.useState<undefined | Coordinates>(
     undefined
   );
   let [showLocation, setShowLocation] = React.useState(false);
   let [showCategoryPicker, setShowCategoryPicker] = React.useState(false);
   let [showGenderPicker, setShowGenderPicker] = React.useState(false);
+  let [showSizePicker, setShowSizePicker] = React.useState(false);
   const navigation = useNavigation();
   function createNewPet() {
     let pet: Pet = {
@@ -244,6 +255,16 @@ export default function AddPetScreen({ user }: { user: User }) {
             <PickerValue>{petAge.toLocaleDateString()}</PickerValue>
           </PickerValueContainerView>
         </RowContainer>
+        <RowContainer>
+          <PickerValueContainer
+            onPress={() => {
+              onClear();
+              setShowSizePicker(showSizePicker ? false : true);
+            }}
+          >
+            <PickerValue>{petSize.label}</PickerValue>
+          </PickerValueContainer>
+        </RowContainer>
       </InfoContainer>
       <InfoContainer>
         <LocationButton
@@ -255,8 +276,7 @@ export default function AddPetScreen({ user }: { user: User }) {
           <LocationButtonText>{"Skrá heimili"}</LocationButtonText>
         </LocationButton>
       </InfoContainer>
-
-      <SubmitButton onPress={() => createNewPet(user)}>
+      <SubmitButton onPress={() => createNewPet()}>
         <SubmitButtonText>{"Skrá dýr"}</SubmitButtonText>
       </SubmitButton>
       {showCategoryPicker ? (
@@ -290,6 +310,27 @@ export default function AddPetScreen({ user }: { user: User }) {
             }}
           >
             {petGenders.map((item) => {
+              return (
+                <Picker.Item
+                  key={item.label}
+                  label={item.label}
+                  value={item.value}
+                />
+              );
+            })}
+          </Picker>
+        </PickerContainer>
+      ) : null}
+      {showSizePicker ? (
+        <PickerContainer>
+          <Picker
+            selectedValue={petSize.value}
+            onValueChange={(item: pickerType, index) => {
+              setPetSize(petSizes[index]);
+              setShowSizePicker(false);
+            }}
+          >
+            {petSizes.map((item) => {
               return (
                 <Picker.Item
                   key={item.label}

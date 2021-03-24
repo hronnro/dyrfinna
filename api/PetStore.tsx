@@ -18,6 +18,8 @@ export const createPet = (user: User, pet: Pet) => {
       breed: pet.breed ? pet.breed : null,
       birthdate: pet.birthDate,
       homeAddress: pet.homeAddress,
+      size: pet.size,
+      description: pet.description ? pet.description : null,
     })
     .then(() => {
       console.log("successfully added pet", pet);

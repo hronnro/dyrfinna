@@ -29,6 +29,8 @@ export type Pet = {
   breed?: string;
   birthDate: Date;
   homeAddress?: Coordinates;
+  size: string;
+  description?: string;
 };
 
 type Location = {

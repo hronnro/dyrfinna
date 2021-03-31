@@ -132,15 +132,17 @@ export default function MyProfileScreen({ user }: { user: User }) {
     );
   };
   const fetchPets = async () => {
+    console.log("fetching");
     const result = await getMyPets(user).then((pets) => {
       return pets;
     });
+    console.log("results", result);
     setMyPets(result);
   };
 
   React.useEffect(() => {
     fetchPets();
-  }, []);
+  }, [user.pets]);
 
   return (
     <BaseContainer>

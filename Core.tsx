@@ -12,7 +12,7 @@ import Navigation from "./navigation";
 import { User } from "./FirestoreModels";
 import { StateProvider, useStateContext } from "./globalState";
 import { ActionType } from "./reducer";
-import { getUser, userListener } from "./api/UserStore";
+import { getUser } from "./api/UserStore";
 
 export default function Core() {
   const isLoadingComplete = useCachedResources();
@@ -81,7 +81,7 @@ export default function Core() {
 
       return subscriber;
     }
-  }, []);
+  }, [user?.id]);
 
   if (!isLoadingComplete || initializing || !appIsReady) {
     return (

@@ -140,7 +140,7 @@ export default function MyProfileScreen({ user }: { user: User }) {
 
   React.useEffect(() => {
     fetchPets();
-  }, []);
+  }, [user.pets]);
 
   return (
     <BaseContainer>

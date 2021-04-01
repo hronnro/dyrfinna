@@ -23,7 +23,7 @@ export default function Navigation({
   user,
 }: {
   colorScheme: ColorSchemeName;
-  user: User;
+  user: User | null;
 }) {
   return (
     <NavigationContainer

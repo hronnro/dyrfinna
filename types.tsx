@@ -34,3 +34,7 @@ export type MyProfileParamList = {
     user: string;
   };
 };
+export type pickerType = {
+  label: string;
+  value: string;
+};

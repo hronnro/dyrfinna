@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "styled-components/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { Keyboard } from "react-native";
 
 import { Coordinates, Pet, User } from "../FirestoreModels";
 import {
@@ -13,8 +14,9 @@ import {
 import Header from "../components/Header";
 import LocationPicker from "./LocationPicker";
 import { createPet } from "../api/PetStore";
-import { Keyboard } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import Picker from "./Picker";
+import { pickerType } from "../types";
 
 const BaseContainer = styled.TouchableOpacity`
   height: 100%;
@@ -122,41 +124,6 @@ const DatePickerContainer = styled.View`
   height: 10%;
 `;
 
-const PickerBackground = styled.View`
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  background-color: #00000066;
-`;
-const PickerContainer = styled.View`
-  background-color: ${mainBackgroundColor};
-  padding-vertical: 40px;
-  width: 70%;
-  align-items: center;
-  justify-content: center;
-  border-radius: 30px;
-`;
-
-const PickerItem = styled.TouchableOpacity`
-  background-color: white;
-  margin: 5px;
-  padding: 5px;
-  width: 60%;
-  height: 30px;
-  border-radius: 20px;
-  align-items: center;
-  justify-content: center;
-  border-color: ${mainOrange};
-  border-width: 1px;
-`;
-const PickerItemText = styled.Text`
-  font-family: "MontserratRegular";
-  font-size: 14px;
-  color: ${textDark};
-`;
-
 const SubmitButton = styled.TouchableOpacity`
   position: absolute;
   bottom: 50px;
@@ -184,10 +151,6 @@ const ErrorMessage = styled.Text`
   color: ${errorRed};
   font-size: 14px;
 `;
-type pickerType = {
-  label: string;
-  value: string;
-};
 
 let petGenders: Array<pickerType> = [
   {
@@ -252,6 +215,10 @@ export default function AddPetScreen({ user }: { user: User }) {
   let [showSizePicker, setShowSizePicker] = React.useState(false);
   let [errorMessage, setErrorMessage] = React.useState<null | string>(null);
   const navigation = useNavigation();
+  let [showPicker, setShowPicker] = React.useState<Array<pickerType> | null>(
+    null
+  );
+
   const validate = () => {
     if (petName != "" && petCategory && petGender && petSize) {
       let pet: Pet = {
@@ -418,61 +385,31 @@ export default function AddPetScreen({ user }: { user: User }) {
         <SubmitButtonText>{"Skrá dýr"}</SubmitButtonText>
       </SubmitButton>
       {showCategoryPicker ? (
-        <PickerBackground>
-          <PickerContainer>
-            {petCategories.map((item) => {
-              return (
-                <PickerItem
-                  key={item.label}
-                  onPress={() => {
-                    setPetCategory(item);
-                    setShowCategoryPicker(false);
-                  }}
-                >
-                  <PickerItemText>{item.label}</PickerItemText>
-                </PickerItem>
-              );
-            })}
-          </PickerContainer>
-        </PickerBackground>
+        <Picker
+          items={petCategories}
+          onPress={(item: pickerType) => {
+            setPetCategory(item);
+            setShowCategoryPicker(false);
+          }}
+        />
       ) : null}
       {showGenderPicker ? (
-        <PickerBackground>
-          <PickerContainer>
-            {petGenders.map((item) => {
-              return (
-                <PickerItem
-                  key={item.label}
-                  onPress={() => {
-                    setPetGender(item);
-                    setShowGenderPicker(false);
-                  }}
-                >
-                  <PickerItemText>{item.label}</PickerItemText>
-                </PickerItem>
-              );
-            })}
-          </PickerContainer>
-        </PickerBackground>
+        <Picker
+          items={petGenders}
+          onPress={(item: pickerType) => {
+            setPetGender(item);
+            setShowGenderPicker(false);
+          }}
+        />
       ) : null}
       {showSizePicker ? (
-        <PickerBackground>
-          <PickerContainer>
-            {petSizes.map((item) => {
-              return (
-                <PickerItem
-                  key={item.label}
-                  onPress={() => {
-                    setPetSize(item);
-                    setShowSizePicker(false);
-                  }}
-                >
-                  <PickerItemText>{item.label}</PickerItemText>
-                </PickerItem>
-              );
-            })}
-          </PickerContainer>
-        </PickerBackground>
+        <Picker
+          items={petSizes}
+          onPress={(item: pickerType) => {
+            setPetSize(item);
+            setShowSizePicker(false);
+          }}
+        />
       ) : null}
       {showLocation ? (
         <LocationContainer>

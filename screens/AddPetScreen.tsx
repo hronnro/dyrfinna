@@ -278,6 +278,7 @@ export default function AddPetScreen({ user }: { user: User }) {
           />
           <InfoInput
             placeholder={"Örmerkjanúmer"}
+            keyboardType={"numeric"}
             onChangeText={(text) => setChipNumber(text)}
           />
         </RowContainer>

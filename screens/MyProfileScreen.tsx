@@ -11,6 +11,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { getMyPets } from "../api/PetStore";
+import MyPetsList from "../components/MyPetsList";
 
 const BaseContainer = styled.View`
   height: 100%;
@@ -52,7 +53,7 @@ const UserInfoText = styled.Text`
   font-size: 15px;
 `;
 
-const MyPetsList = styled.View`
+const MyPetsContainer = styled.View`
   margin-top: 20%;
   width: 80%;
   background-color: white;
@@ -66,25 +67,7 @@ const MyPetsHeaderContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
 `;
-const MyPetsContainer = styled.ScrollView`
-  width: 100%;
-  height: 140px;
-`;
-const MyPetContainer = styled.View`
-  width: 100px;
-  height: 100px;
-  border-color: ${mainOrange};
-  border-width: 2px;
-  border-radius: 20px;
-  align-items: center;
-  justify-content: center;
-  margin-horizontal: 15px;
-  margin-top: 20px;
-`;
-const MyPetName = styled.Text`
-  font-size: 14px;
-  font-family: "MontserratBold";
-`;
+
 const MyPetsHeader = styled.Text`
   font-size: 22px;
   font-family: "MontserratBold";
@@ -144,25 +127,21 @@ export default function MyProfileScreen({ user }: { user: User }) {
 
   return (
     <BaseContainer>
-      <MyPetsList>
+      <MyPetsContainer>
         <MyPetsHeaderContainer>
           <MyPetsHeader>Mín Dýr</MyPetsHeader>
           <AddPetButton onPress={() => navigation.navigate("AddPetScreen")}>
             <Ionicons name="add-outline" size={26} color="white" />
           </AddPetButton>
         </MyPetsHeaderContainer>
-        <MyPetsContainer horizontal={true}>
-          {myPets && myPets.length > 0
-            ? myPets.map((pet) => {
-                return (
-                  <MyPetContainer key={pet.id}>
-                    <MyPetName>{pet.name}</MyPetName>
-                  </MyPetContainer>
-                );
-              })
-            : null}
-        </MyPetsContainer>
-      </MyPetsList>
+        {myPets && myPets.length > 0 ? (
+          <MyPetsList
+            pets={myPets}
+            onPetPress={() => console.log("Todo: edit pet")}
+            selectedPet={null}
+          />
+        ) : null}
+      </MyPetsContainer>
       <UserInfoContainer>
         <UserInfoHeader>Mínar Upplýsingar</UserInfoHeader>
         <UserInfoRow>

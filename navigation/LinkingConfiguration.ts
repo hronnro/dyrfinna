@@ -9,6 +9,7 @@ export default {
           ActiveSearches: {
             screens: {
               ActiveSearchesScreen: "ActiveSearchesScreen",
+              ReportLostPetScreen: "ReportLostPetScreen",
             },
           },
           MyProfile: {

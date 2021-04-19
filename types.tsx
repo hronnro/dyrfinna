@@ -15,6 +15,9 @@ export type RootStackParamList = {
   AddPetScreen: {
     user: string;
   };
+  ReportLostPetScreen: {
+    user: string;
+  };
 };
 
 export type BottomTabParamList = {
@@ -24,6 +27,7 @@ export type BottomTabParamList = {
 
 export type ActiveSearchesParamList = {
   ActiveSearchesScreen: undefined;
+  ReportLostPetScreen: undefined;
 };
 
 export type MyProfileParamList = {

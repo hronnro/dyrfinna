@@ -17,6 +17,7 @@ import { createPet } from "../api/PetStore";
 import { useNavigation } from "@react-navigation/native";
 import Picker from "./Picker";
 import { pickerType } from "../types";
+import DateInputField from "../components/DateInputField";
 
 const BaseContainer = styled.TouchableOpacity`
   height: 100%;
@@ -97,31 +98,13 @@ const PickerValueContainer = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-const PickerValueContainerView = styled.View`
-  width: 49%;
-  margin-top: 10px;
-  background-color: white;
-  width: 49%;
-  height: 36px;
-  border-radius: 18px;
-  padding-horizontal: 10px;
-  justify-content: center;
-`;
-
 const PickerValue = styled.Text`
   font-family: "MontserratRegular";
   font-size: 14px;
 `;
 
 const DatePickerContainer = styled.View`
-  position: absolute;
-  margin-top: 10px;
-  padding-left: 12px;
-  right: 0px;
-  bottom: 0px;
-  top: 0px;
-  width: 50%;
-  height: 10%;
+  width: 49%;
 `;
 
 const SubmitButton = styled.TouchableOpacity`
@@ -328,17 +311,11 @@ export default function AddPetScreen({ user }: { user: User }) {
             onChangeText={(text) => setPetBreed(text)}
           />
           <DatePickerContainer>
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={petAge}
-              display="default"
-              onChange={(event, date) => setPetAge(date)}
-              maximumDate={Date.now()}
+            <DateInputField
+              dateValue={petAge}
+              setValue={(value) => setPetAge(value)}
             />
           </DatePickerContainer>
-          <PickerValueContainerView pointerEvents={"none"}>
-            <PickerValue>{petAge.toLocaleDateString()}</PickerValue>
-          </PickerValueContainerView>
         </RowContainer>
         <RowContainer>
           {petSize ? (

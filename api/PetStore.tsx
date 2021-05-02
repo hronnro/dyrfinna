@@ -16,13 +16,40 @@ export const createPet = (user: User, pet: Pet) => {
       petType: pet.petType,
       gender: pet.gender,
       breed: pet.breed ? pet.breed : null,
-      birthdate: pet.birthDate,
+      birthdate: pet.birthdate,
       homeAddress: pet.homeAddress,
       size: pet.size,
       description: pet.description ? pet.description : null,
     })
     .then(() => {
       console.log("successfully added pet", pet);
+      const updatedUser: User = user.pets
+        ? { ...user, pets: [...user.pets, docRef.id] }
+        : { ...user, pets: [docRef.id] };
+      updateUser(updatedUser);
+    })
+    .catch((err) => console.log(err));
+};
+
+export const updatePet = (user: User, pet: Pet) => {
+  const db = firebase.firestore();
+  const docRef = db.collection("pets").doc(pet.id);
+  docRef
+    .update({
+      id: docRef.id,
+      name: pet.name,
+      ownerId: user.id,
+      chipId: pet.chipId ? pet.chipId : null,
+      petType: pet.petType,
+      gender: pet.gender,
+      breed: pet.breed ? pet.breed : null,
+      birthdate: pet.birthdate,
+      homeAddress: pet.homeAddress,
+      size: pet.size,
+      description: pet.description ? pet.description : null,
+    })
+    .then(() => {
+      console.log("successfully updated pet", pet);
       const updatedUser: User = user.pets
         ? { ...user, pets: [...user.pets, docRef.id] }
         : { ...user, pets: [docRef.id] };
@@ -46,7 +73,15 @@ export const getMyPets = async (user: User) => {
         .then((snapshot) => {
           let pets: Pet[] = [];
           snapshot.forEach((doc) => {
-            pets.push(doc.data());
+            const data = doc.data();
+            console.log("data", data, data.birthdate.seconds);
+            const petData = {
+              ...data,
+              // this is needed since firebase returns a timestamp and not a date object
+              // https://firebase.google.com/docs/reference/js/firebase.firestore.Timestamp
+              birthdate: new Date(data.birthdate?.seconds * 1000),
+            };
+            pets.push(petData);
           });
           return pets;
         });

@@ -13,7 +13,7 @@ import {
 } from "../constants/StyleColors";
 import Header from "../components/Header";
 import LocationPicker from "./LocationPicker";
-import { createPet } from "../api/PetStore";
+import { createPet, updatePet } from "../api/PetStore";
 import Picker from "./Picker";
 import { pickerType } from "../types";
 import { useRoute } from "@react-navigation/native";
@@ -204,15 +204,13 @@ const findPickerType = (types: Array<pickerType>, item: string) => {
 export default function AddPetScreen({ user }: { user: User }) {
   const route = useRoute();
   const pet = route.params?.pet as Pet;
-  let [petName, setPetName] = React.useState(pet.name ?? "");
-  let [chipNumber, setChipNumber] = React.useState(pet.chipId ?? "");
-  let [description, setDescription] = React.useState(pet.description ?? "");
+  let [petName, setPetName] = React.useState(pet?.name ?? "");
+  let [chipNumber, setChipNumber] = React.useState(pet?.chipId ?? "");
+  let [description, setDescription] = React.useState(pet?.description ?? "");
   let [petCategory, setPetCategory] = React.useState<pickerType | null>(
     findPickerType(petCategories, pet.petType)
   );
-  let [petAge, setPetAge] = React.useState(
-    new Date((pet.birthdate.seconds as number) * 1000) ?? new Date()
-  );
+  let [petAge, setPetAge] = React.useState(pet.birthdate ?? new Date());
   let [petBreed, setPetBreed] = React.useState(pet.breed ?? "");
   let [petGender, setPetGender] = React.useState<pickerType | null>(
     findPickerType(petGenders, pet.gender)
@@ -240,12 +238,18 @@ export default function AddPetScreen({ user }: { user: User }) {
         petType: petCategory.value,
         gender: petGender.value,
         breed: petBreed,
-        birthDate: petAge,
+        birthdate: petAge,
         homeAddress: petAddress,
         size: petSize.value,
         description: description,
       };
-      createPet(user, pet);
+      if (route.params?.pet) {
+        console.log("bca", route.params.pet);
+        pet.id = route.params?.pet.id;
+        updatePet(user, pet);
+      } else {
+        createPet(user, pet);
+      }
     } else {
       let errors = [];
       if (petName == "") {

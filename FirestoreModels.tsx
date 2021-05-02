@@ -27,7 +27,7 @@ export type Pet = {
   petType: string;
   gender: string;
   breed?: string;
-  birthDate: Date;
+  birthdate: Date;
   homeAddress?: Coordinates;
   size: string;
   description?: string;

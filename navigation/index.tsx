@@ -13,7 +13,7 @@ import LoggedOutNavigator from "./LoggedOutNavigator";
 import LinkingConfiguration from "./LinkingConfiguration";
 import { User } from "../FirestoreModels";
 import AddPetScreen from "../screens/AddPetScreen";
-import Header from "../components/Header";
+import MyProfileScreen from "../screens/MyProfileScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 // If you are not familiar with React Navigation, we recommend going through the

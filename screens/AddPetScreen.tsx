@@ -14,9 +14,9 @@ import {
 import Header from "../components/Header";
 import LocationPicker from "./LocationPicker";
 import { createPet } from "../api/PetStore";
-import { useNavigation } from "@react-navigation/native";
 import Picker from "./Picker";
 import { pickerType } from "../types";
+import { useRoute } from "@react-navigation/native";
 
 const BaseContainer = styled.TouchableOpacity`
   height: 100%;
@@ -197,15 +197,29 @@ let petSizes: Array<pickerType> = [
   },
 ];
 
+const findPickerType = (types: Array<pickerType>, item: string) => {
+  return types.find((type) => type.value === item) || null;
+};
+
 export default function AddPetScreen({ user }: { user: User }) {
-  let [petName, setPetName] = React.useState("");
-  let [chipNumber, setChipNumber] = React.useState("");
-  let [description, setDescription] = React.useState("");
-  let [petCategory, setPetCategory] = React.useState<pickerType | null>(null);
-  let [petAge, setPetAge] = React.useState(new Date());
-  let [petBreed, setPetBreed] = React.useState("");
-  let [petGender, setPetGender] = React.useState<pickerType | null>(null);
-  let [petSize, setPetSize] = React.useState<pickerType | null>(null);
+  const route = useRoute();
+  const pet = route.params?.pet as Pet;
+  let [petName, setPetName] = React.useState(pet.name ?? "");
+  let [chipNumber, setChipNumber] = React.useState(pet.chipId ?? "");
+  let [description, setDescription] = React.useState(pet.description ?? "");
+  let [petCategory, setPetCategory] = React.useState<pickerType | null>(
+    findPickerType(petCategories, pet.petType)
+  );
+  let [petAge, setPetAge] = React.useState(
+    new Date((pet.birthdate.seconds as number) * 1000) ?? new Date()
+  );
+  let [petBreed, setPetBreed] = React.useState(pet.breed ?? "");
+  let [petGender, setPetGender] = React.useState<pickerType | null>(
+    findPickerType(petGenders, pet.gender)
+  );
+  let [petSize, setPetSize] = React.useState<pickerType | null>(
+    findPickerType(petSizes, pet.size)
+  );
   let [petAddress, setPetAddress] = React.useState<undefined | Coordinates>(
     undefined
   );
@@ -214,10 +228,6 @@ export default function AddPetScreen({ user }: { user: User }) {
   let [showGenderPicker, setShowGenderPicker] = React.useState(false);
   let [showSizePicker, setShowSizePicker] = React.useState(false);
   let [errorMessage, setErrorMessage] = React.useState<null | string>(null);
-  const navigation = useNavigation();
-  let [showPicker, setShowPicker] = React.useState<Array<pickerType> | null>(
-    null
-  );
 
   const validate = () => {
     if (petName != "" && petCategory && petGender && petSize) {
@@ -273,10 +283,12 @@ export default function AddPetScreen({ user }: { user: User }) {
       <InfoContainer>
         <RowContainer>
           <InfoInput
+            value={petName}
             placeholder={"Nafn"}
             onChangeText={(text) => setPetName(text)}
           />
           <InfoInput
+            value={chipNumber}
             placeholder={"Örmerkjanúmer"}
             keyboardType={"numeric"}
             onChangeText={(text) => setChipNumber(text)}
@@ -324,6 +336,7 @@ export default function AddPetScreen({ user }: { user: User }) {
         </RowContainer>
         <RowContainer>
           <InfoInput
+            value={petBreed}
             placeholder={"Undirtegund"}
             onChangeText={(text) => setPetBreed(text)}
           />
@@ -332,7 +345,7 @@ export default function AddPetScreen({ user }: { user: User }) {
               testID="dateTimePicker"
               value={petAge}
               display="default"
-              onChange={(event, date) => setPetAge(date)}
+              onChange={(_event, date) => setPetAge(date)}
               maximumDate={Date.now()}
             />
           </DatePickerContainer>
@@ -373,6 +386,7 @@ export default function AddPetScreen({ user }: { user: User }) {
           <DescriptionInput
             placeholder={"Frekari upplýsingar"}
             multiline={true}
+            value={description}
             onChangeText={(text) => setDescription(text)}
           ></DescriptionInput>
         </RowContainer>

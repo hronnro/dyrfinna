@@ -1,9 +1,7 @@
+import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import React, { useState, useEffect } from "react";
-import { CommonActions } from "@react-navigation/native";
-
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ActiveSearchesScreen from "../screens/ActiveSearchesScreen";

@@ -70,7 +70,7 @@ const MyPetsContainer = styled.ScrollView`
   width: 100%;
   height: 140px;
 `;
-const MyPetContainer = styled.View`
+const MyPetContainer = styled.TouchableOpacity`
   width: 100px;
   height: 100px;
   border-color: ${mainOrange};
@@ -120,9 +120,21 @@ const LogoutButtonText = styled.Text`
 //   getMyPets(user).then((pets) => setMyPets(pets));
 // }
 
-export default function MyProfileScreen({ user }: { user: User }) {
+export default function MyProfileScreen({
+  user,
+  navigation,
+}: {
+  user: User;
+  navigation?: any;
+}) {
   const [myPets, setMyPets] = React.useState<null | Pet[]>(null);
-  const navigation = useNavigation();
+  const nav = useNavigation();
+
+  console.log(
+    "navigation",
+    nav.dangerouslyGetState(),
+    nav.dangerouslyGetParent()
+  );
 
   const renderIcon = (iconName) => {
     return (
@@ -147,7 +159,7 @@ export default function MyProfileScreen({ user }: { user: User }) {
       <MyPetsList>
         <MyPetsHeaderContainer>
           <MyPetsHeader>Mín Dýr</MyPetsHeader>
-          <AddPetButton onPress={() => navigation.navigate("AddPetScreen")}>
+          <AddPetButton onPress={() => nav.navigate("AddPetScreen")}>
             <Ionicons name="add-outline" size={26} color="white" />
           </AddPetButton>
         </MyPetsHeaderContainer>
@@ -155,7 +167,13 @@ export default function MyProfileScreen({ user }: { user: User }) {
           {myPets && myPets.length > 0
             ? myPets.map((pet) => {
                 return (
-                  <MyPetContainer key={pet.id}>
+                  <MyPetContainer
+                    onPress={() => {
+                      console.log("pet before22", pet);
+                      nav.navigate("AddPetScreen", { pet });
+                    }}
+                    key={pet.id}
+                  >
                     <MyPetName>{pet.name}</MyPetName>
                   </MyPetContainer>
                 );
